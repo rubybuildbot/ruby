@@ -37,8 +37,10 @@ class EmulatorRunner {
     Logger logger;
     Emulator *emulator;
     bool runTests;
+    bool loadExpansionROM;
     std::string exeFile;
     std::string binFile;
+    std::string romFile;
     uint8_t header[TEST_HEADER_SIZE];
 
     void readHeader();
@@ -57,6 +59,8 @@ public:
     void configure(int argc, char* argv[]);
     void setEmulator(Emulator *emulator);
     bool shouldRunTests();
+    bool shouldLoadExpansionROM();
+    std::string romFilePath();
     uint32_t programCounter();
     uint32_t globalPointer();
     uint32_t initialStackFramePointerBase();
