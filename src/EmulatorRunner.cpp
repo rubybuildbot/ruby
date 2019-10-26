@@ -5,7 +5,7 @@
 
 using namespace std;
 
-EmulatorRunner::EmulatorRunner() : logger(LogLevel::NoLog), emulator(nullptr), runTests(false), exeFile(), binFile(), header() {}
+EmulatorRunner::EmulatorRunner() : logger(LogLevel::NoLog), emulator(nullptr), runTests(false), loadExpansionROM(false), exeFile(), binFile(), romFile(), header() {}
 
 EmulatorRunner* EmulatorRunner::instance = nullptr;
 
@@ -49,6 +49,15 @@ void EmulatorRunner::configure(int argc, char* argv[]) {
         binFile = string(path);
         argumentFound = true;
     }
+    if (checkOption(argv, argv + argc, "--rom")) {
+        char *path = getOptionValue(argv, argv + argc, "--rom");
+        if (path == NULL) {
+            logger.logError("Incorrect argument passed. See README.md for usage.");
+        }
+        loadExpansionROM = true;
+        romFile = string(path);
+        argumentFound = true;
+    }
     if (!argumentFound) {
         logger.logError("Incorrect argument passed. See README.md for usage.");
     }
@@ -83,6 +92,14 @@ uint32_t EmulatorRunner::loadWord(uint32_t offset) {
 
 bool EmulatorRunner::shouldRunTests() {
     return runTests;
+}
+
+bool EmulatorRunner::shouldLoadExpansionROM() {
+    return loadExpansionROM;
+}
+
+string EmulatorRunner::romFilePath() {
+    return romFile;
 }
 
 uint32_t EmulatorRunner::programCounter() {

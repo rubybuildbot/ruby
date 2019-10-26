@@ -20,6 +20,8 @@ Interconnect::Interconnect(LogLevel logLevel, std::unique_ptr<COP0> &cop0, uniqu
     EmulatorRunner *emulatorRunner = EmulatorRunner::getInstance();
     if (emulatorRunner->shouldRunTests()) {
         expansion1->loadBin("expansion/EXPNSION.BIN");
+    } else if (emulatorRunner->shouldLoadExpansionROM()) {
+        expansion1->loadBin(emulatorRunner->romFilePath());
     }
 }
 
